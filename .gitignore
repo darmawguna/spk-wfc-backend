@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env
+prisma/dev.db*
+*.log
+*.err
+*.out
+err.txt
+out.txt
+gen_err.txt
+gen_out.txt
+prisma-gen.log
+.DS_Store
+.pi/

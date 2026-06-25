@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-06-24
+goal: Ship a production-ready REST API backend for the SPK WFC WASPAS system
+  that exactly matches the reference calculation table in PRD section 4.5

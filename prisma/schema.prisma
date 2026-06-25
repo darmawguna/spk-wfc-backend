@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  nama         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Cafe {
+  id       Int     @id @default(autoincrement())
+  kode     String  @unique
+  nama     String
+  alamat   String
+  linkMaps String?
+  photo    String?
+
+  alternativeValues AlternativeValue[]
+  waspasResults     WaspasResult[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Criteria {
+  id     Int    @id @default(autoincrement())
+  kode   String @unique
+  nama   String
+  jenis  String // "benefit" | "cost" (not enum, per D2 deviation)
+  satuan String?
+  bobot  Float  @default(0)
+  urutan Int
+
+  alternativeValues AlternativeValue[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AlternativeValue {
+  id         Int   @id @default(autoincrement())
+  cafeId     Int
+  criteriaId Int
+  nilai      Float
+
+  cafe     Cafe     @relation(fields: [cafeId], references: [id], onDelete: Cascade)
+  criteria Criteria @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
+
+  @@unique([cafeId, criteriaId])
+}
+
+model WaspasResult {
+  id         Int      @id @default(autoincrement())
+  cafeId     Int
+  ranking    Int
+  wsm        Float
+  wpm        Float
+  qi         Float
+  calculatedAt DateTime @default(now())
+
+  cafe Cafe @relation(fields: [cafeId], references: [id], onDelete: Cascade)
+
+  @@unique([cafeId]) // one result row per cafe per calculation run
+}
