@@ -1,0 +1,48 @@
+erDiagram
+    Admin {
+        int id PK
+        string email UK
+        string passwordHash
+        string nama
+        datetime createdAt
+        datetime updatedAt
+    }
+    Cafe {
+        int id PK
+        string kode UK
+        string nama
+        string alamat
+        string linkMaps
+        string photo
+        datetime createdAt
+        datetime updatedAt
+    }
+    Criteria {
+        int id PK
+        string kode UK
+        string nama
+        string jenis
+        string satuan
+        float bobot
+        int urutan
+        datetime createdAt
+        datetime updatedAt
+    }
+    AlternativeValue {
+        int id PK
+        int cafeId FK
+        int criteriaId FK
+        float nilai
+    }
+    WaspasResult {
+        int id PK
+        int cafeId FK
+        int ranking
+        float wsm
+        float wpm
+        float qi
+        datetime calculatedAt
+    }
+    Cafe ||--o{ AlternativeValue : "has many"
+    Criteria ||--o{ AlternativeValue : "has many"
+    Cafe ||--o| WaspasResult : "has one"
