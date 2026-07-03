@@ -7,6 +7,7 @@ import cafeRoutes from "./routes/cafes.js";
 import criteriaRoutes from "./routes/criterias.js";
 import valueRoutes from "./routes/values.js";
 import waspasRoutes from "./routes/waspas.js";
+import presetRoutes from "./routes/presets.js";
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/api/cafes", cafeRoutes);
 app.use("/api/criterias", criteriaRoutes);
 app.use("/api/values", valueRoutes);
 app.use("/api/waspas", waspasRoutes);
+app.use("/api/presets", presetRoutes);
 
 // Error handler (must be last)
 app.use(errorHandler);

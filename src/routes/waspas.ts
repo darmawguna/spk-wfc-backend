@@ -1,14 +1,26 @@
 import { Router } from "express";
 import { requireAdmin } from "../middleware/requireAdmin.js";
+import { validate } from "../middleware/validate.js";
 import { AppError } from "../middleware/error.js";
 import * as waspasRepo from "../repositories/waspasRepository.js";
 import { runCalculation } from "../services/calculateService.js";
+import { userCalcSchema } from "./schemas/userWeighting.js";
+import { runUserCalculation } from "../services/userCalculateService.js";
 
 const router = Router();
 
 router.post("/calculate", requireAdmin, async (_req, res, next) => {
   try {
     const result = await runCalculation();
+    res.json({ success: true, data: result });
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.post("/user-calculate", validate(userCalcSchema), async (req, res, next) => {
+  try {
+    const result = await runUserCalculation(req.body);
     res.json({ success: true, data: result });
   } catch (e) {
     next(e);

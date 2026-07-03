@@ -41,6 +41,7 @@ model Criteria {
   urutan Int
 
   alternativeValues AlternativeValue[]
+  presetWeights     PresetWeight[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -70,4 +71,26 @@ model WaspasResult {
   cafe Cafe @relation(fields: [cafeId], references: [id], onDelete: Cascade)
 
   @@unique([cafeId]) // one result row per cafe per calculation run
+}
+
+model WeightPreset {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  weights PresetWeight[]
+}
+
+model PresetWeight {
+  id         Int   @id @default(autoincrement())
+  presetId   Int
+  criteriaId Int
+  bobot      Float
+
+  preset   WeightPreset @relation(fields: [presetId], references: [id], onDelete: Cascade)
+  criteria Criteria     @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
+
+  @@unique([presetId, criteriaId])
 }
